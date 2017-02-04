@@ -15,11 +15,16 @@
 
 package com.google.engedu.anagrams;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -29,25 +34,42 @@ public class AnagramDictionary {
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
-    private ArrayList<String> wordList;
+    private HashSet<String> wordSet;
+    private HashMap<String, ArrayList<String>> lettersToWord;
+    private ArrayList<Character> alphabets;
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
-        wordList = new ArrayList<String>();
+        wordSet = new HashSet<String>();
+        lettersToWord = new HashMap<String, ArrayList<String>>();
         while((line = in.readLine()) != null) {
             String word = line.trim();
-            wordList.add(word);
+            wordSet.add(word);
+            String sortedWord = sortLetters(word);
+            if(lettersToWord.containsKey(sortedWord)) {
+                ArrayList<String> tempAnagrams = lettersToWord.get(sortedWord);
+                tempAnagrams.add(word);
+                lettersToWord.put(sortedWord, tempAnagrams);
+            } else {
+                ArrayList<String> tempAnagrams = new ArrayList<String>();
+                tempAnagrams.add(word);
+                lettersToWord.put(sortedWord, tempAnagrams);
+            }
         }
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+        if(wordSet.contains(word) && !word.contains(base)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<String> getAnagrams(String targetWord) {
         ArrayList<String> result = new ArrayList<String>();
-        for(String word : wordList) {
+        for(String word : wordSet) {
             if(word.length() == targetWord.length()) {
                 if(sortLetters(word).equals(sortLetters(targetWord))) {
                     result.add(word);
@@ -59,6 +81,17 @@ public class AnagramDictionary {
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
         ArrayList<String> result = new ArrayList<String>();
+        alphabets = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
+        for(Character alpha : alphabets) {
+            String modifiedWord = word + alpha;
+            String modifiedSortedWord = sortLetters(modifiedWord);
+            if(lettersToWord.containsKey(modifiedSortedWord)) {
+                ArrayList<String> tempList = lettersToWord.get(modifiedSortedWord);
+                if(tempList.contains(modifiedWord)) {
+                    result.add(modifiedWord);
+                }
+            }
+        }
         return result;
     }
 
