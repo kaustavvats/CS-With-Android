@@ -38,13 +38,17 @@ public class AnagramDictionary {
     private HashSet<String> wordSet;
     private HashMap<String, ArrayList<String>> lettersToWord;
     private ArrayList<Character> alphabets;
+    private HashMap<Integer, ArrayList<String>> sizeToWords;
+    private Integer wordLength;
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
         wordList = new ArrayList<String>();
         wordSet = new HashSet<String>();
+        sizeToWords = new HashMap<Integer, ArrayList<String>>();
         lettersToWord = new HashMap<String, ArrayList<String>>();
+        wordLength = DEFAULT_WORD_LENGTH;
         while((line = in.readLine()) != null) {
             String word = line.trim();
             wordSet.add(word);
@@ -58,6 +62,15 @@ public class AnagramDictionary {
                 ArrayList<String> tempAnagrams = new ArrayList<String>();
                 tempAnagrams.add(word);
                 lettersToWord.put(sortedWord, tempAnagrams);
+            }
+            if(sizeToWords.containsKey(word.length())) {
+                ArrayList<String> tempList = sizeToWords.get(word.length());
+                tempList.add(word);
+                sizeToWords.put(word.length(), tempList);
+            } else {
+                ArrayList<String> tempList = new ArrayList<String>();
+                tempList.add(word);
+                sizeToWords.put(word.length(), tempList);
             }
         }
     }
@@ -107,7 +120,8 @@ public class AnagramDictionary {
     }
 
     public String pickGoodStarterWord() {
-        Random rand = new Random();
-        return wordList.get(rand.nextInt(wordList.size()));
+        Integer sizeLimit = random.nextInt(MAX_WORD_LENGTH - DEFAULT_WORD_LENGTH);
+        ArrayList<String> tempList = sizeToWords.get(sizeLimit+DEFAULT_WORD_LENGTH);
+        return tempList.get(random.nextInt(tempList.size()));
     }
 }
