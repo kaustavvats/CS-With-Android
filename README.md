@@ -9,8 +9,8 @@ All modules are provided here: [Course Content](https://cswithandroid.withgoogle
 
 - [x] **Pre Assessment**
 - [ ] **Unit A: Scarne's Dice with App Inventor** (optional) Getting started with Android development
-- [x] **Unit 1: Anagrams** Using Java in Android Studio
-- [ ] **Unit 2: Scarne's Dice** Creating an new Android app in Android Studio
+- [x] **Unit 1: Anagrams** Using Java in Android Studio - 4/2/2017
+- [x] **Unit 2: Scarne's Dice** Creating an new Android app in Android Studio - 16/2/2017
 - [ ] **Unit 3: Ghost** A review of binary search
 - [ ] **Unit 4: Ghost II** Tree traversals and tries
 - [ ] **Unit 5: Puzzle-8** Using min-heaps
