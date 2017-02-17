@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finalUserScore += currentUserScore;
                 currentUserScore = 0;
-                finalCompScore += handleComputerSide();
+                currentCompScore = handleComputerSide();
+                Toast.makeText(getApplicationContext(), "Computer scored: " + Integer.toString(currentCompScore), Toast.LENGTH_SHORT).show();
+                finalCompScore += currentCompScore;
                 if(finalCompScore >= 100) {
                     Toast.makeText(getApplicationContext(), "YOU LOST!!!", Toast.LENGTH_LONG).show();
                     currentUserScore = 0;
@@ -52,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 if(currentRoll == 1) {
                     diceView.setImageResource(R.drawable.dice1);
                     currentUserScore = 0;
-                    finalCompScore += handleComputerSide();
+                    currentCompScore = handleComputerSide();
+                    Toast.makeText(getApplicationContext(), "Computer scored: " + Integer.toString(currentCompScore), Toast.LENGTH_SHORT).show();
+                    finalCompScore += currentCompScore;
                     if(finalCompScore >= 100) {
                         Toast.makeText(getApplicationContext(), "YOU LOST!!!", Toast.LENGTH_LONG).show();
                         currentUserScore = 0;
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             current = rand.nextInt(5) + 1;
         }
         if(current == 1) {
-            return 0;
+            result = 0;
         }
         return result;
     }
